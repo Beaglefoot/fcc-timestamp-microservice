@@ -4,6 +4,7 @@ const express = require('express');
 const querystring = require('querystring');
 const parse = require('date-fns/parse');
 const format = require('date-fns/format');
+const isValid = require('date-fns/is_valid');
 const validateUrl = require('./helpers/validateUrl');
 const getCurrentIp = require('./helpers/getCurrentIp');
 const getCurrentTime = require('./helpers/getCurrentTime');
@@ -16,10 +17,6 @@ const app = express();
 app.use(express.static('public'));
 
 app.get('*', (req, res) => {
-  console.log('--- GET ---');
-  console.log('query:', req.query);
-  console.log('hostname:', req.hostname);
-
   res.set({
     'Access-Control-Allow-Origin': '*',
   });
@@ -27,29 +24,30 @@ app.get('*', (req, res) => {
   const fallbackResponse = {unix: null, natural: null};
   const pathSegments = req.url.split('/');
 
-  console.log('validateUrl:', validateUrl(pathSegments));
+  if (!validateUrl(pathSegments)) {
+    res.send(fallbackResponse);
+    return;
+  }
 
-  if (!validateUrl(pathSegments)) res.send(fallbackResponse);
-  else {
-    const string = querystring.unescape(pathSegments[1]);
-    console.log('string:', string);
+  const string = querystring.unescape(pathSegments[1]);
+  const timestamp = parseInt(string);
 
-    let timestamp = parseInt(string);
+  if (timestamp) {
+    const naturalLanguageDate = format(
+      new Date(timestamp * 1000),
+      'MMMM D, YYYY',
+    );
 
-    if (timestamp) {
-      const naturalLanguageDate = format(
-        new Date(timestamp * 1000),
-        'MMMM D, YYYY',
-      );
-      console.log('naturalLanguageDate:', naturalLanguageDate);
+    res.send({unix: timestamp, natural: naturalLanguageDate});
+  } else {
+    const date = parse(string);
 
-      res.send({unix: timestamp, natural: naturalLanguageDate});
-    } else {
-      timestamp = format(parse(string), 'X');
-      console.log('formatedDate:', timestamp);
-
-      res.send({unix: timestamp, natural: string});
+    if (!isValid(date)) {
+      res.send(fallbackResponse);
+      return;
     }
+
+    res.send({unix: format(date, 'X'), natural: string});
   }
 });
 
