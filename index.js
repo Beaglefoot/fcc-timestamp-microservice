@@ -5,7 +5,7 @@ const querystring = require('querystring');
 const parse = require('date-fns/parse');
 const format = require('date-fns/format');
 const isValid = require('date-fns/is_valid');
-const validateUrl = require('./helpers/validateUrl');
+const validatePathSegments = require('./helpers/validatePathSegments');
 const getCurrentIp = require('./helpers/getCurrentIp');
 const getCurrentTime = require('./helpers/getCurrentTime');
 
@@ -22,9 +22,9 @@ app.get('*', (req, res) => {
   });
 
   const fallbackResponse = {unix: null, natural: null};
-  const pathSegments = req.url.split('/');
+  const pathSegments = req.path.split('/');
 
-  if (!validateUrl(pathSegments)) {
+  if (!validatePathSegments(pathSegments)) {
     res.send(fallbackResponse);
     return;
   }
@@ -41,13 +41,11 @@ app.get('*', (req, res) => {
     res.send({unix: timestamp, natural: naturalLanguageDate});
   } else {
     const date = parse(string);
-
-    if (!isValid(date)) {
-      res.send(fallbackResponse);
-      return;
-    }
-
-    res.send({unix: format(date, 'X'), natural: string});
+    res.send(
+      isValid(date)
+        ? {unix: format(date, 'X'), natural: string}
+        : fallbackResponse,
+    );
   }
 });
 
