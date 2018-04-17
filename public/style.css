@@ -1,0 +1,30 @@
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  color: #333;
+  line-height: 1.5;
+}
+
+a {
+  color: #4dbce9;
+}
+
+.example {
+  display: flex;
+  justify-content: space-between;
+}
+
+.input,
+.output {
+  width: 100%;
+  padding: 0 1em;
+  line-height: 1.5;
+}
+
+.input > b {
+  border-bottom: 0.1em solid #4dbce9;
+}
+
+.output > b {
+  border-bottom: 0.1em solid #c2de1f;
+}

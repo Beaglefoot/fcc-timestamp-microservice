@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Timestamp Microservice</title>
+    <link rel="stylesheet" href="./style.css">
+  </head>
+  <body>
+    <div class="container">
+      <h1>Timestamp Microservice</h1>
+      <div>This is the first project in API section on <a href="https://www.freecodecamp.org/challenges/timestamp-microservice">freeCodeCamp</a>.</div>
+      <h3>The user stories are:</h3>
+      <ul>
+        <li>I can pass a string as a parameter, and it will check to see whether that string contains either a unix timestamp or a natural language date (example: January 1, 2016).</li>
+        <li>If it does, it returns both the Unix timestamp and the natural language form of that date.</li>
+        <li>If it does not contain a date or Unix timestamp, it returns null for those properties.</li>
+      </ul>
+      <h3>Examples of usage:</h3>
+      <div class="example">
+        <div class="input"><b>Url</b></div>
+        <div class="output"><b>Response</b></div>
+      </div>
+      <div class="example">
+        <div class="input">http://localhost:3000/1450137600</div>
+        <div class="output">{"unix":1523962353,"natural":"April 17, 2018"}</div>
+      </div>
+      <div class="example">
+        <div class="input">http://localhost:3000/April%2017,%202018</div>
+        <div class="output">{"unix":"1523912400","natural":"April 17, 2018"}</div>
+      </div>
+      <div class="example">
+        <div class="input">http://localhost:3000/wrong</div>
+        <div class="output">{"unix":null,"natural":null}</div>
+      </div>
+    </div>
+  </body>
+</html>
