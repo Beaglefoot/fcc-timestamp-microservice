@@ -1,3 +1,8 @@
+body {
+  font-family: 'Noto Sans', Arial, sans-serif;
+  font-size: 15px;
+}
+
 .container {
   max-width: 800px;
   margin: 0 auto;
@@ -26,11 +31,11 @@ a {
 }
 
 .input > b {
-  border-bottom: 0.1em solid #4dbce9;
+  border-bottom: 2px solid #4dbce9;
 }
 
 .output > b {
-  border-bottom: 0.1em solid #c2de1f;
+  border-bottom: 2px solid #c2de1f;
 }
 
 @media (max-width: 684px) {
